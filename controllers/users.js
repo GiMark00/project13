@@ -11,7 +11,7 @@ module.exports.getSingleUser = (req, res) => {
     .orFail(new Error('NotFound'))
     .then((users) => res.send({ data: users }))
     .catch((err) => {
-      if (err.message === 'CastError') {
+      if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
       } else if (err.message === 'NotFound') {
         res.status(404).send({ message: 'Пользователя нет в базе.' });

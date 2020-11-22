@@ -25,7 +25,7 @@ module.exports.deleteCard = (req, res) => {
     .orFail(new Error('NotValidId'))
     .then((cards) => res.send({ data: cards }))
     .catch((err) => {
-      if (err.message === 'CastError') {
+      if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные.' });
       } else if (err.message === 'NotValidId') {
         res.status(404).send({ message: 'Карточки нет в базе.' });
