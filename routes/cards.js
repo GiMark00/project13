@@ -5,4 +5,4 @@ PostCards.get('/cards', getCards);
 PostCards.post('/cards', createCard);
 PostCards.delete('/cards/:id', deleteCard);
 
-module.exports = PostCards; // экспортировали роутер
+module.exports = PostCards;
