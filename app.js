@@ -1,17 +1,14 @@
-const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const PostUsers = require('./routes/users');
 const PostCards = require('./routes/cards');
+const auth = require('./middlewares/auth');
+const { createUser, login } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.connect('mongodb://localhost:27017/mydb', {
   useNewUrlParser: true,
@@ -19,16 +16,15 @@ mongoose.connect('mongodb://localhost:27017/mydb', {
   useFindAndModify: false,
 });
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5fb40db27133bd29d4943601',
-  };
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-  next();
-});
+app.post('/signup', createUser);
+app.post('/signin', login);
+
+app.use(auth);
 
 app.use('/', PostUsers);
-
 app.use('/', PostCards);
 
 app.use((req, res) => {
